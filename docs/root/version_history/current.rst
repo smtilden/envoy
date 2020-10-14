@@ -25,6 +25,9 @@ Bug Fixes
 
 * dns: fix a bug where custom resolvers provided in configuration were not preserved after network issues.
 * http: fixed URL parsing for HTTP/1.1 fully qualified URLs and connect requests containing IPv6 addresses.
+* active health checks: health checks using a TLS transport socket and secrets delivered via :ref:`SDS <config_secret_discovery_service>` will now wait until secrets are loaded before the first health check attempt. This should improve startup times by not having to wait for the :ref:`no_traffic_interval <envoy_v3_api_field_config.core.v3.HealthCheck.no_traffic_interval>` until the next attempt.
+
+* active HTTP health checks: properly handles HTTP/2 GOAWAY frames from the upstream. Previously a GOAWAY frame due to a graceful listener drain could cause improper failed health checks due to streams being refused by the upstream on a connection that is going away.
 * http: sending CONNECT_ERROR for HTTP/2 where appropriate during CONNECT requests.
 * tls: fix read resumption after triggering buffer high-watermark and all remaining request/response bytes are stored in the SSL connection's internal buffers.
 
